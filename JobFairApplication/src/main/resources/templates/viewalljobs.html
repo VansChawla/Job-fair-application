@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Candidate Dashboard | Online Job Fair</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+          background: linear-gradient(135deg, #eaf3ff 0%, #f5f9ff 100%);
+          font-family: 'Poppins', sans-serif;
+          color: #333;
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+        }
+
+        /* Navbar */
+        .navbar {
+          background-color: #004b8d;
+          position: fixed;
+          width: 100%;
+          top: 0;
+          z-index: 1000;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+          padding: 6px 0 !important;
+          min-height: 45px;
+        }
+
+        .navbar-brand, .nav-link {
+          color: #fff !important;
+          font-weight: 500;
+        }
+
+        .nav-link:hover { text-decoration: underline; }
+
+        .content {
+          flex: 1;
+          margin-top: 80px;
+        }
+
+        /* Header */
+        .page-header {
+          text-align: center;
+          margin-bottom: 30px;
+          animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .page-header h3 { color: #004b8d; font-weight: 700; margin-bottom: 10px; }
+
+        /* Search */
+        .search-section {
+          background: #ffffff;
+          padding: 20px 25px;
+          border-radius: 12px;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+          max-width: 950px;
+          margin: 0 auto 40px auto;
+        }
+
+        /* Job Cards */
+        .job-card {
+          background: #fff;
+          border-radius: 12px;
+          box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+          padding: 25px;
+          margin-bottom: 15px;
+          transition: all 0.3s ease;
+        }
+
+        .job-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 8px 18px rgba(0, 75, 141, 0.15);
+          border-left: 5px solid #004b8d;
+        }
+
+        .apply-btn {
+          background: linear-gradient(90deg, #0d6efd, #007bff);
+          color: white;
+          border: none;
+          border-radius: 8px;
+          padding: 8px 16px;
+          font-size: 0.9rem;
+          transition: all 0.3s;
+        }
+
+        .apply-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(13,110,253,0.3);
+        }
+
+        .applied {
+          background: #28a745 !important;
+          border: none;
+          color: white !important;
+          font-weight: 600;
+        }
+
+        /* Toast Notification */
+        .toast-container {
+          position: fixed;
+          top: 70px;
+          right: 20px;
+          z-index: 1055;
+        }
+
+        footer {
+          background: #004b8d;
+          color: white;
+          text-align: center;
+          padding: 10px 0;
+          font-size: 0.9rem;
+          margin-top: auto;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(15px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand fw-bold" th:href="@{/}">Online Job Fair</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon text-light"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" th:href="@{/login/candidatehome}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/viewalljobs}">Jobs</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/logout}">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Toast Notification -->
+<div class="toast-container">
+    <div id="applyToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                ✅ Application submitted successfully!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="content container">
+    <div class="page-header">
+        <h3>Welcome, <span th:text="${session.userName}">Candidate</span> 👋</h3>
+        <p>Explore opportunities that align with your skills and goals</p>
+    </div>
+
+    <!-- Search
+    <div class="search-section">
+        <form th:action="@{/jobs/search}" method="get" class="row g-3 align-items-center justify-content-center">
+            <div class="col-md-8">
+                <input type="text" name="keyword" class="form-control" placeholder="🔍 Search jobs by title, skill, or location...">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Search</button>
+            </div>
+        </form>
+    </div>
+    -->
+    <!-- Dynamic Jobs -->
+    <div th:if="${jobs != null and !#lists.isEmpty(jobs)}">
+        <div th:each="job : ${jobs}" class="job-card">
+            <div class="d-flex justify-content-between align-items-start flex-wrap">
+                <div>
+                    <div class="job-title" th:text="${job.title}">Software Developer</div>
+                    <div class="job-company" th:text="${job.companyName}">TechCorp Pvt Ltd</div>
+                    <div class="job-info">
+                        📍 <span th:text="${job.location}">Bangalore</span> |
+                        🎓 <span th:text="${job.eligibility}">B.Tech / MCA</span> |
+                        💰 <span th:text="'₹' + ${job.salary}">₹80000</span>
+                    </div>
+                    <div class="job-description mt-2" th:text="${job.description}">
+                        Exciting opportunity to join a dynamic tech team...
+                    </div>
+                </div>
+                <div class="mt-3 mt-md-0">
+
+                    <div class="mt-3 mt-md-0">
+                        <form th:action="@{/applyjobs}" method="post"
+                              th:if="${job.isAvailable}"> <input type="hidden" name="id" th:value="${job.id}" />
+
+                            <button type="submit" class="apply-btn">
+                                Apply Now
+                            </button>
+                        </form>
+
+                        <div th:if="${!job.isAvailable}" class="applied p-2 rounded">
+                            ✅ NOT Available
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- No Jobs -->
+    <div th:if="${jobs == null or #lists.isEmpty(jobs)}" class="no-jobs">
+        🚫 No job openings found. Please check back later!
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    © 2025 Online Job Fair Portal | Designed by ARHIT | SUDHANSHU | KRISHNA | VANSH | ARJUN
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function applyJob(button) {
+      // ✅ Change button to Applied
+      button.classList.add("applied");
+      button.innerHTML = "✅ Applied";
+      button.disabled = true;
+
+      // ✅ Show success toast
+      const toastEl = document.getElementById('applyToast');
+      const toast = new bootstrap.Toast(toastEl);
+      toast.show();
+    }
+</script>
+</body>
+</html>

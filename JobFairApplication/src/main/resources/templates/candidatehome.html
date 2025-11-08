@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online Job Fair | Home</title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+    />
+    <style>
+        body {
+          background-color: #fff;
+          font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Navbar */
+        .navbar {
+          background-color: #004b8d;
+        }
+        .navbar-brand,
+        .nav-link,
+        .navbar-text {
+          color: #fff !important;
+        }
+        .nav-link:hover {
+          text-decoration: underline;
+        }
+
+        /* Hero Section */
+        .hero {
+          background: url("https://images.pexels.com/photos/4342496/pexels-photo-4342496.jpeg")
+            no-repeat center center/cover;
+          color: white;
+          text-align: center;
+          padding: 120px 20px;
+          min-height: 80vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          backdrop-filter: brightness(0.6);
+        }
+        .hero h1 {
+          font-weight: 700;
+        }
+
+        /* Search bar */
+        .search-box {
+          max-width: 600px;
+          margin: 20px auto;
+          background-color: white;
+          border-radius: 10px;
+          padding: 15px;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Live Vacancies Section */
+        .live-vacancies {
+          background-color: #f8faff;
+          padding: 70px 0 40px 0;
+          text-align: center;
+        }
+        .live-vacancies h2 {
+          font-size: 2.6rem;
+          font-weight: 700;
+          color: #0b1b4c;
+        }
+        .live-vacancies .live-badge {
+          display: inline-block;
+          background: #ffeaea;
+          color: red;
+          font-weight: 600;
+          font-size: 0.9rem;
+          border-radius: 8px;
+          padding: 4px 10px;
+          margin-left: 10px;
+          vertical-align: middle;
+        }
+        .live-vacancies .live-badge::before {
+          content: "● ";
+          font-size: 1rem;
+        }
+        .live-vacancies p {
+          color: #273469;
+          font-size: 1.05rem;
+          max-width: 750px;
+          margin: 15px auto 0 auto;
+          line-height: 1.6;
+        }
+
+        /* Stats Section */
+        .stats {
+          text-align: center;
+          background-color: #f9f9f9;
+          padding: 40px 0;
+        }
+        .stats h3 {
+          font-size: 1.8rem;
+          color: #004b8d;
+        }
+        .stats p {
+          color: #555;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+          background-color: #f9fbff;
+          padding: 60px 0;
+        }
+        .how-it-works h2 {
+          font-size: 2.3rem;
+          font-weight: 700;
+          color: #222;
+          margin-bottom: 40px;
+        }
+        .how-it-works .text-brown {
+          color: #b3751d;
+        }
+        .work-step {
+          background: #fff;
+          border-radius: 12px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          transition: all 0.3s ease-in-out;
+          padding: 30px 20px;
+          height: 100%;
+        }
+        .work-step:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 8px 25px rgba(13, 110, 253, 0.2);
+        }
+        .work-step img {
+          width: 80px;
+          margin-bottom: 20px;
+          transition: transform 0.3s ease;
+        }
+        .work-step:hover img {
+          transform: scale(1.1);
+        }
+        .work-step h4 {
+          color: #004b8d;
+          font-weight: 600;
+          margin-bottom: 10px;
+        }
+        .work-step p {
+          color: #555;
+          font-size: 0.95rem;
+        }
+        @keyframes floatIcon {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-6px); }
+        }
+        .animate-float {
+          animation: floatIcon 3s ease-in-out infinite;
+        }
+
+        /* Footer */
+        footer {
+          background-color: #004b8d;
+          color: white;
+          padding: 20px;
+          text-align: center;
+        }
+
+        .btn-brown {
+          background-color: #b3751d;
+          color: white;
+          border: none;
+        }
+        .btn-brown:hover {
+          background-color: #8a5b14;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand fw-bold" th:href="@{/}">Online Job Fair</a>
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav"
+        >
+            <span class="navbar-toggler-icon text-light"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/login/candidatehome}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/viewalljobs}">Jobs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/applicantprofile}">Profile</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/logout}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+    <h1>Welcome to the Online Job Fair Portal</h1>
+    <p>Connecting Job Seekers and Employers Effortlessly</p>
+</section>
+
+<!-- LIVE VACANCIES SECTION -->
+<section class="live-vacancies">
+    <div class="container">
+        <h2>
+            Live Vacancies <span class="live-badge">LIVE</span>
+        </h2>
+        <p>
+            Find thousands of exclusive job opportunities across Tamil Nadu's
+            leading private companies, with employers and competitive salary
+            packages.
+        </p>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-it-works">
+    <div class="container text-center">
+        <h2>How It <span class="text-brown">Works?</span></h2>
+        <div class="row justify-content-center g-4">
+            <div class="col-md-4">
+                <div class="work-step animate-float">
+                    <img src="https://cdn-icons-png.flaticon.com/512/456/456212.png" alt="Create Account">
+                    <h4>Create an Account</h4>
+                    <p>
+                        Sign up by creating an account with required details to avail our services.
+                        Correct details help us fine-tune your job search.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="work-step animate-float">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135768.png" alt="Search Job">
+                    <h4>Search Desired Job</h4>
+                    <p>
+                        Browse through our wide job database notified by numerous companies.
+                        Add filters to find your desired jobs easily.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="work-step animate-float">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1256/1256650.png" alt="Send Resume">
+                    <h4>Send Your Resume</h4>
+                    <p>
+                        Once you narrow down your choices, send your resume directly to employers
+                        and start your recruitment journey.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <p>
+        &copy; 2025 Online Job Fair | Designed for a better employment ecosystem
+    </p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

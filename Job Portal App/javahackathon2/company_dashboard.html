@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Company Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f5f7fa;
+      font-family: "Poppins", sans-serif;
+      animation: fadeIn 0.6s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .navbar {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-brand {
+      font-weight: 600;
+      font-size: 1.3rem;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-light.btn-sm {
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .btn-light.btn-sm:hover {
+      background-color: #fff;
+      transform: scale(1.05);
+    }
+
+    .container {
+      animation: slideUp 0.6s ease-in;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h3, h4 {
+      color: #333;
+      font-weight: 600;
+    }
+
+    .btn-success {
+      transition: all 0.3s ease;
+    }
+
+    .btn-success:hover {
+      background-color: #28a745;
+      transform: scale(1.03);
+    }
+
+    .table {
+      border-radius: 10px;
+      overflow: hidden;
+      background: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .table thead {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .table tbody tr {
+      transition: all 0.3s ease;
+    }
+
+    .table tbody tr:hover {
+      background-color: #e9f3ff;
+      transform: scale(1.01);
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #007bff;
+      color: white;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      font-size: 0.9rem;
+    }
+
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="/">Online Job Fair</a>
+      <div>
+        <a href="/" class="btn btn-light btn-sm me-2">Home</a>
+        <a class="btn btn-light btn-sm" href="/logout">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container my-5">
+    <h3 class="mb-4">Welcome, <span th:text="${company.name}"></span></h3>
+
+    <a href="/company/job_post" class="btn btn-success mb-4">Post New Job</a>
+    
+    <h4 class="mb-3">Your Job Postings</h4>
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Applications</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody th:each="job : ${jobs}">
+        <tr>
+          <td th:text="${job.title}" placeholder="Job Title"></td>
+          <td th:text="${job.applicationCount}" placeholder="0"></td>
+          <td>Active</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+<footer class="bg-primary text-white text-center p-3">
+    © 2025 Online Job Fair Portal | Digital Employment Exchange <br>
+    <small>Developed by <strong>Arhit</strong> | <strong>Sudhanshu</strong> | <strong>Krishna</strong> | <strong>Vansh</strong> | <strong>Arjun</strong></small>
+</footer>
+
+</body>
+</html>

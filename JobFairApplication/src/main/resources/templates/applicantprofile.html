@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Profile | Online Job Fair</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+          background: linear-gradient(135deg, #004b8d, #007bff);
+          font-family: 'Poppins', sans-serif;
+          color: #333;
+          min-height: 100vh;
+          margin: 0;
+          padding: 0;
+        }
+
+        /* ✅ Navbar */
+        .navbar {
+          background-color: #004b8d;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+
+        .navbar-brand, .nav-link {
+          color: #fff !important;
+        }
+
+        .nav-link:hover {
+          text-decoration: underline;
+        }
+
+        /* ✅ Profile Container */
+        .profile-container {
+          max-width: 800px;
+          background: #fff;
+          margin: 120px auto;
+          padding: 40px 50px;
+          border-radius: 20px;
+          box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+          animation: fadeInUp 0.8s ease-in-out;
+        }
+
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(40px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .profile-header {
+          text-align: center;
+          position: relative;
+        }
+
+        /* ✅ Animated Profile Image */
+        .profile-pic {
+          width: 130px;
+          height: 130px;
+          border-radius: 50%;
+          margin-bottom: 15px;
+          border: 4px solid #007bff;
+          position: relative;
+          animation: pulse 3s infinite;
+          box-shadow: 0 0 20px rgba(0,123,255,0.4);
+          object-fit: cover;
+        }
+
+        @keyframes pulse {
+          0% { box-shadow: 0 0 10px rgba(0,123,255,0.6); }
+          50% { box-shadow: 0 0 30px rgba(0,123,255,1); }
+          100% { box-shadow: 0 0 10px rgba(0,123,255,0.6); }
+        }
+
+        h2 {
+          color: #004b8d;
+          font-weight: 700;
+          margin-bottom: 10px;
+        }
+
+        .email {
+          color: #555;
+          font-size: 0.95rem;
+        }
+
+        /* ✅ Info Section */
+        .info-section {
+          margin-top: 30px;
+        }
+
+        .info-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          background: #f9f9ff;
+          border-left: 5px solid #004b8d;
+          border-radius: 10px;
+          padding: 12px 18px;
+          margin-bottom: 15px;
+          transition: all 0.3s ease;
+        }
+
+        .info-item:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 4px 12px rgba(0,75,141,0.2);
+        }
+
+        .info-label {
+          font-weight: 600;
+          color: #004b8d;
+        }
+
+        .skills-section {
+          margin-top: 25px;
+        }
+
+        .skill-badge {
+          display: inline-block;
+          background: linear-gradient(90deg, #004b8d, #0d6efd);
+          color: #fff;
+          padding: 8px 16px;
+          border-radius: 30px;
+          font-size: 0.9rem;
+          font-weight: 500;
+          margin: 5px;
+          transition: transform 0.3s ease;
+        }
+
+        .skill-badge:hover {
+          transform: scale(1.1);
+          box-shadow: 0 0 10px rgba(13,110,253,0.3);
+        }
+
+        .resume-link {
+          display: inline-block;
+          margin-top: 25px;
+          background-color: #004b8d;
+          color: white;
+          padding: 12px 25px;
+          border-radius: 8px;
+          text-decoration: none;
+          font-weight: 500;
+          transition: all 0.3s ease;
+        }
+
+        .resume-link:hover {
+          background-color: #0d6efd;
+          transform: translateY(-2px);
+        }
+
+        footer {
+          text-align: center;
+          color: #ddd;
+          padding: 20px;
+          margin-top: 60px;
+        }
+
+    </style>
+</head>
+
+<body>
+<!-- ✅ Navbar -->
+<nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold" th:href="@{/login/candidatehome}">Online Job Fair</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" th:href="@{/login/candidatehome}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/viewalljob}">Jobs</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/logout}">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- ✅ Profile Section -->
+<div class="profile-container">
+    <div class="profile-header">
+        <!-- Animated Profile Image (Example image, replace dynamically if uploaded) -->
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile" class="profile-pic">
+        <h2 th:text="${user.username}">Job Fair</h2>
+        <p class="email" th:text="${user.email}">jobfair@gmail.com</p>
+    </div>
+
+    <div class="info-section">
+        <div class="info-item">
+            <span class="info-label">Phone</span>
+            <span th:text="${user.phone}">+91 0123456789</span>
+        </div>
+
+        <div class="info-item">
+            <span class="info-label">Email</span>
+            <span th:text="${user.email}">jobfair@gmail.com</span>
+        </div>
+
+        <div class="info-item">
+            <span class="info-label">Username</span>
+            <span th:text="${user.username}">jobfair</span>
+        </div>
+    </div>
+
+    <!-- ✅ Skills Section -->
+    <div class="skills-section text-center">
+        <h5 class="fw-bold mb-3" style="color:#004b8d;">Top Skills</h5>
+        <span class="skill-badge" th:text="${user.skill1}">Java</span>
+        <span class="skill-badge" th:text="${user.skill2}">Spring Boot</span>
+        <span class="skill-badge" th:text="${user.skill3}">HTML</span>
+        <span class="skill-badge" th:text="${user.skill4}">CSS</span>
+        <span class="skill-badge" th:text="${user.skill5}">MySQL</span>
+    </div>
+
+    <!-- ✅ Resume Link -->
+    <div class="text-center">
+        <a class="resume-link" th:href="${user.resumeLink}" target="_blank">📄 View Resume</a>
+    </div>
+</div>
+
+<!-- ✅ Footer -->
+<footer>
+    © 2025 Online Job Fair | Designed by ARHIT | SUDHANSHU | KRISHNA | VANSH | ARJUN
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

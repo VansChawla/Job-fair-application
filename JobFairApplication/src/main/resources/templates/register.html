@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - Online Job Fair</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+          background: linear-gradient(120deg, #e7f0ff 0%, #f5f9ff 100%);
+          font-family: "Poppins", sans-serif;
+          color: #333;
+        }
+
+        .auth-container {
+          background: #ffffff;
+          border-radius: 20px;
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+          max-width: 750px;
+          margin: 60px auto;
+          padding: 40px 50px;
+          animation: fadeUp 0.8s ease-in-out;
+        }
+
+        .auth-container h3 {
+          text-align: center;
+          color: #0d6efd;
+          font-weight: 700;
+          margin-bottom: 35px;
+          letter-spacing: 0.5px;
+        }
+
+        .form-label {
+          font-weight: 500;
+          font-size: 0.9rem;
+          color: #444;
+          margin-bottom: 6px;
+        }
+
+        .form-control, .form-select {
+          border-radius: 10px;
+          padding: 10px 12px;
+          font-size: 0.9rem;
+          border: 1px solid #d1d9e6;
+          transition: all 0.3s ease;
+          background: #f9fbff;
+        }
+
+        .form-control:focus, .form-select:focus {
+          border-color: #0d6efd;
+          background: #fff;
+          box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+        }
+
+        .btn-primary {
+          background: linear-gradient(90deg, #0d6efd, #007bff);
+          border: none;
+          border-radius: 10px;
+          padding: 11px;
+          font-weight: 500;
+          letter-spacing: 0.5px;
+          transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(13, 110, 253, 0.35);
+        }
+
+        .login-link {
+          color: #0d6efd;
+          font-weight: 500;
+          text-decoration: none;
+        }
+
+        .login-link:hover {
+          text-decoration: underline;
+        }
+
+        .error-text {
+          color: #d9534f;
+          font-size: 0.85rem;
+          display: none;
+        }
+
+        .skills-grid input {
+          flex: 1 1 calc(20% - 10px);
+          min-width: 110px;
+          text-align: center;
+          border-radius: 30px;
+          background-color: #f0f6ff;
+        }
+
+        .skills-grid input:focus {
+          background-color: #ffffff;
+        }
+
+        footer {
+          color: rgba(13, 110, 253, 0.7);
+          text-align: center;
+          padding: 12px 0;
+          margin-top: 40px;
+          font-size: 0.9rem;
+          letter-spacing: 0.3px;
+          animation: fadeIn 1s ease-in-out;
+          border-top: 1px solid rgba(13, 110, 253, 0.15);
+        }
+
+        footer span {
+          font-weight: 600;
+          transition: color 0.3s ease;
+        }
+
+        footer span:hover {
+          color: rgba(13, 110, 253, 1);
+        }
+
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+          .auth-container {
+            padding: 25px 20px;
+            max-width: 95%;
+          }
+          .skills-grid input {
+            flex: 1 1 45%;
+          }
+          footer {
+            font-size: 0.8rem;
+          }
+        }
+    </style>
+</head>
+<body>
+
+<div class="auth-container">
+    <h3>Create Your Account</h3>
+
+    <form th:action="@{/register}" th:object="${user}" method="post" onsubmit="return validation()">
+        <div class="row g-3">
+            <!-- ROLE AT TOP -->
+            <div class="col-12">
+                <label for="role" class="form-label">Register As</label>
+                <select th:field="*{role}" id="role" class="form-select" onchange="toggleFields()" required>
+                    <option value="">Select your role</option>
+                    <option value="candidate">Candidate</option>
+                    <option value="company">Company</option>
+                </select>
+            </div>
+
+            <!-- COMMON FIELDS -->
+            <div class="col-md-6">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" th:field="*{email}" class="form-control" placeholder="you@example.com" required>
+            </div>
+
+            <div class="col-md-6">
+                <label for="phone" class="form-label">Phone Number</label>
+                <input type="tel" th:field="*{phone}" class="form-control" placeholder="9876543210" pattern="[0-9]{10}" required>
+            </div>
+
+            <!-- CANDIDATE FIELDS -->
+            <div id="candidateFields">
+                <div class="col-md-6">
+                    <label for="username" class="form-label">User Name</label>
+                    <input type="text" th:field="*{username}" class="form-control" placeholder="Alex Singh" id="username" required>
+                    <p class="error-text" id="error-message">Username must be greater than 5 characters.</p>
+                </div>
+                <div class="col-md-6">
+                    <label for="resumeLink" class="form-label">Resume Link</label>
+                    <input type="url" th:field="*{resumeLink}" class="form-control" placeholder="https://drive.google.com/your-resume">
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label">Top 5 Skills</label>
+                    <div class="d-flex flex-wrap gap-2 skills-grid">
+                        <input type="text" th:field="*{skill1}" class="form-control" placeholder="Skill 1">
+                        <input type="text" th:field="*{skill2}" class="form-control" placeholder="Skill 2">
+                        <input type="text" th:field="*{skill3}" class="form-control" placeholder="Skill 3">
+                        <input type="text" th:field="*{skill4}" class="form-control" placeholder="Skill 4">
+                        <input type="text" th:field="*{skill5}" class="form-control" placeholder="Skill 5">
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMPANY FIELDS -->
+            <div id="companyFields" style="display:none;">
+                <div class="col-md-6">
+                    <label for="companyName" class="form-label">Company Name</label>
+                    <input type="text" th:field="*{companyName}" class="form-control" placeholder="ABC Pvt Ltd">
+                </div>
+
+                <div class="col-md-6">
+                    <label for="website" class="form-label">Company Website</label>
+                    <input type="url" th:field="*{website}" class="form-control" placeholder="https://www.company.com">
+                </div>
+
+                <div class="col-md-6">
+                    <label for="location" class="form-label">Location</label>
+                    <input type="text" th:field="*{location}" class="form-control" placeholder="EX: India">
+                </div>
+
+                <div class="col-md-6">
+                    <label for="description" class="form-label">Description</label>
+                    <input type="text" th:field="*{description}" class="form-control" placeholder="Add Description">
+                </div>
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="col-md-6">
+                <label for="password" class="form-label">Create Password</label>
+                <input type="password" th:field="*{password}" id="password" class="form-control" placeholder="Create password" required>
+            </div>
+
+            <div class="col-md-6">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input type="password" id="confirmPassword" class="form-control" placeholder="Re-enter password" required>
+                <p class="error-text" id="passwordError">Passwords do not match!</p>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mt-4">Register</button>
+    </form>
+
+    <p class="text-center mt-3">
+        Already registered?
+        <a th:href="@{/login}" class="login-link">Login here</a>
+    </p>
+
+    <!-- Minimal Transparent Footer -->
+    <footer>
+        © 2025 <span>Online Job Fair Portal</span> | Designed by
+        <span>ARHIT</span> | <span>SUDHANSHU</span> | <span>KRISHNA</span> | <span>VANSH</span> | <span>ARJUN</span>
+    </footer>
+</div>
+
+<script>
+    function validatePasswords() {
+        const password = document.getElementById('password').value;
+        const confirm = document.getElementById('confirmPassword').value;
+        const error = document.getElementById('passwordError');
+        if (password !== confirm) {
+            error.style.display = 'block';
+            return false; // Prevent form submission
+        } else {
+            error.style.display = 'none';
+            return true;
+        }
+    }
+
+    function toggleFields() {
+        const role = document.getElementById('role').value;
+        const candidateFields = document.getElementById('candidateFields');
+        const companyFields = document.getElementById('companyFields');
+        if (role === 'candidate') {
+            candidateFields.style.display = 'block';
+            companyFields.style.display = 'none';
+            companyFields.querySelectorAll("input").forEach(el => el.value = "");
+        } else if (role === 'company') {
+            candidateFields.style.display = 'none';
+            companyFields.style.display = 'block';
+            candidateFields.querySelectorAll("input").forEach(el => el.value = "");
+        } else {
+            candidateFields.style.display = 'none';
+            companyFields.style.display = 'none';
+        }
+    }
+
+    function validateUsername() {
+        const username = document.getElementById('username').value;
+        const errorMessage = document.getElementById('error-message');
+        if (username.length <= 5) {
+            errorMessage.style.display = 'block';
+            return false; // Prevent form submission
+        } else {
+            errorMessage.style.display = 'none';
+            return true; // Allow form submission
+        }
+    }
+
+    function validation() {
+        let validPassword = validatePasswords();
+        let validUsername = validateUsername();
+        return validPassword && validUsername;
+    }
+</script>
+
+</body>
+</html>

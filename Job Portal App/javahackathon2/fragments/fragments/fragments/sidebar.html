@@ -1,0 +1,8 @@
+<div class="col-md-3">
+    <div class="list-group">
+        <a href="/dashboard" class="list-group-item list-group-item-action" th:classappend="${#httpServletRequest.requestURI == '/dashboard' ? 'active' : ''}">Dashboard</a>
+        <a href="/jobs" class="list-group-item list-group-item-action">Browse Jobs</a>
+        <a href="/applications" class="list-group-item list-group-item-action">My Applications</a>
+        <a href="/logout" class="list-group-item list-group-item-action text-danger">Logout</a>
+    </div>
+</div>
